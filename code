@@ -1,0 +1,802 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "#### <span style=\"color:red\"> 任务一、Python基本库的使用\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;&nbsp;&nbsp;&nbsp;在使用Python编写网络爬虫的过程中，有四个基本库是非常经典，也是初学者必学的四个基本库，它们分别是Urllib、requests、re、datatime四个库，接下来，我们分别对这四个基本库进行介绍。\n",
+    "\n",
+    "&nbsp;&nbsp;**一、Urllib库的使用**\n",
+    "\n",
+    "\n",
+    " - 1.1urlparse方法把urlstr解析成各个组件，示例代码如下：\n",
+    " "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "# -*- coding:utf-8 -*-\n",
+    "import urllib.request\n",
+    "import urllib.parse\n",
+    "url = \"http://www.baidu.com\"\n",
+    "parsed = urllib.parse.urlparse(url)\n",
+    "print(parsed)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "urlparse()方法将url进行了拆分，返回结果是一个ParseResult类型的对象，它包含6部分，分别是scheme、netloc、path、params、query和fragment。\n",
+    "\n",
+    "**方法调用：**urlparse(url)\n",
+    "\n",
+    "主要参数：\n",
+    "\n",
+    "- scheme:  代表的是协议\n",
+    "- netloc: 域名服务器\n",
+    "- path:  代表的是路径\n",
+    "- params: 参数\n",
+    "- query:  代表的是查询\n",
+    "- fragment: 表示是判断\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    " - 1.2urljoin（baseurl,newurl,allowFrag=None）方法把url的根域名和新url拼合成一个完整的url，示例代码如下：\n",
+    "    "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "http://www.baidu.com/index.html\n"
+     ]
+    }
+   ],
+   "source": [
+    "import urllib.parse\n",
+    "url = \"http://www.baidu.com\"\n",
+    "new_path = urllib.parse.urljoin(url,\"index.html\")\n",
+    "print(new_path)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    " - 1.3 urlopen(url,data,timeout)方法打开一个url的方法，返回一个文件对象，而后能够进行类似文件对象的操作，示例代码如下：\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import urllib.request\n",
+    "req = urllib.request.urlopen('http://www.baidu.com')\n",
+    "print(req.read())\n",
+    "\n",
+    "print(req.getcode())\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;&nbsp;**二、 requests库的使用**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    ">requests库基于urllib，比urllib更加方便，是Python更加简短易懂的http库。\n",
+    "requests是用Python语言基于urllib编写的，采用的是Apache2 Licensed开源协议的HTTP库。\n",
+    "\n",
+    "倘若IDE没有配置requests模块的，需要单独通过pip安装。安装命令为：\n",
+    "\n",
+    " - pip install requests"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;&nbsp; &nbsp;&nbsp; **2.1 get()方法**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "2.1.1 get不带参请求"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "最常用的HTTP请求方式分别为GET和POST，在使用requests模块实现GET请求时可以使用两种方式来实现，一种是带参数，另一种为不带参数。以百度为例，实现不带参数的网络请求："
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 5,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "响应状态码为： 200\n",
+      "请求的网络地址为： https://www.baidu.com/\n",
+      "头部信息为： {'Cache-Control': 'private, no-cache, no-store, proxy-revalidate, no-transform', 'Connection': 'keep-alive', 'Content-Encoding': 'gzip', 'Content-Type': 'text/html', 'Date': 'Fri, 14 Jul 2023 03:17:49 GMT', 'Last-Modified': 'Mon, 23 Jan 2017 13:23:55 GMT', 'Pragma': 'no-cache', 'Server': 'bfe/1.0.8.18', 'Set-Cookie': 'BDORZ=27315; max-age=86400; domain=.baidu.com; path=/', 'Transfer-Encoding': 'chunked'}\n",
+      "cookie信息为： <RequestsCookieJar[<Cookie BDORZ=27315 for .baidu.com/>]>\n"
+     ]
+    }
+   ],
+   "source": [
+    "import requests    # 导入网络请求模块requests\n",
+    "\n",
+    "# 发送网络请求\n",
+    "response = requests.get('https://www.baidu.com')\n",
+    "print('响应状态码为：',response.status_code)  # 打印状态码\n",
+    "print('请求的网络地址为：',response.url)          # 打印请求url\n",
+    "print('头部信息为：',response.headers)      # 打印头部信息\n",
+    "print('cookie信息为：',response.cookies)      # 打印cookie信息"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "2.1.2 get带参请求"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "如果需要为GET请求指定参数时，可以直接将参数添加在请求地址URL的后面，然后用问号（？）进行分隔，如果一个URL地址中有多个参数，参数之间用“＆”进行连接。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "{\n",
+      "  \"args\": {\n",
+      "    \"age\": \"kaifeng\", \n",
+      "    \"name\": \"zhang\"\n",
+      "  }, \n",
+      "  \"headers\": {\n",
+      "    \"Accept\": \"*/*\", \n",
+      "    \"Accept-Encoding\": \"gzip, deflate, br\", \n",
+      "    \"Host\": \"httpbin.org\", \n",
+      "    \"User-Agent\": \"python-requests/2.26.0\", \n",
+      "    \"X-Amzn-Trace-Id\": \"Root=1-64b0c0da-4f814a685c1aef270e35235a\"\n",
+      "  }, \n",
+      "  \"origin\": \"124.70.176.183\", \n",
+      "  \"url\": \"http://httpbin.org/get?name=zhang&age=kaifeng\"\n",
+      "}\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "import requests    # 导入网络请求模块requests\n",
+    "\n",
+    "response = requests.get('http://httpbin.org/get?name=zhang&age=kaifeng')\n",
+    "\n",
+    "print(response.text)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "requests模块提供了传递参数的方法，允许使用params关键字参数以一个字符串字典来提供这些参数。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import requests\n",
+    "data = {\n",
+    "\" name\" : \"tom\" ,\n",
+    "\" age\": 20\n",
+    "}\n",
+    "response = requests.get ('http://httpbin.org/get',params=data)\n",
+    "print(response.text)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;&nbsp; &nbsp;&nbsp; **2.2 post()方法**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "post请求方式也叫做提交表单，表单中的数据内容就是对应的请求参数。使用requests模块实现post请求时需要设置请求参数data"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**<span style=\"color:red\">【练习】</span>将user和password两个字段传入到透明代理中，其命名分别为：aswd 与 123456，以便重复调用**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "{\n",
+      "  \"args\": {\n",
+      "    \"password\": \"wjjee15\", \n",
+      "    \"uer\": \"zhangsanfeng\"\n",
+      "  }, \n",
+      "  \"headers\": {\n",
+      "    \"Accept\": \"*/*\", \n",
+      "    \"Accept-Encoding\": \"gzip, deflate, br\", \n",
+      "    \"Host\": \"httpbin.org\", \n",
+      "    \"User-Agent\": \"python-requests/2.26.0\", \n",
+      "    \"X-Amzn-Trace-Id\": \"Root=1-64b0c342-01c2bc3e7f81fb6e7a5e3fd9\"\n",
+      "  }, \n",
+      "  \"origin\": \"124.70.176.183\", \n",
+      "  \"url\": \"http://httpbin.org/get?uer=zhangsanfeng&password=wjjee15\"\n",
+      "}\n",
+      "\n",
+      "<html>\n",
+      "<head><title>504 Gateway Time-out</title></head>\n",
+      "<body>\n",
+      "<center><h1>504 Gateway Time-out</h1></center>\n",
+      "</body>\n",
+      "</html>\n",
+      "\n"
+     ]
+    }
+   ],
+   "source": [
+    "import requests\n",
+    "\n",
+    "\n",
+    "data = {\n",
+    "\" user\" : \"zhangsanfeng\" ,\n",
+    "\" password\":\"wjjee15\"\n",
+    "}\n",
+    "\n",
+    "print(response.text)\n",
+    "\n",
+    "\n",
+    "response = requests.get ('http://httpbin.org/get?user=zhangsanfeng&password=wjjee15')\n",
+    "print(response.text)\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;&nbsp; &nbsp;&nbsp; **2.3 添加请求头headers**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "有时在请求一个网页内容时，会发现无论通过GET、POST以及其他请求方式，都会出现403错误。这种现象多数为服务器拒绝了您的访问，那是因为这些网页为了防止恶意采集信息，所使用的反爬虫设置。此时可以通过模拟浏览器的头部信息来进行访问，这样就能解决以上反爬设置的问题。"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import requests    # 导入网络请求模块requests\n",
+    "\n",
+    "url = 'https://www.baidu.com/'     # 创建需要爬取网页的地址\n",
+    "# 创建头部信息\n",
+    "headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:72.0) Gecko/20100101 Firefox/72.0'}\n",
+    "response  = requests.get(url, headers=headers)    # 发送网络请求\n",
+    "print(response.status_code)                       # 打印响应状态码"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**<span style=\"color:red\">【练习】</span>添加请求头headers传入到透明代理中，避免爬虫被封闭**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "200\n"
+     ]
+    }
+   ],
+   "source": [
+    "import requests\n",
+    "\n",
+    "\n",
+    "headers = {'User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'}\n",
+    "\n",
+    "\n",
+    "response  = requests.get('http://httpbin.org/get', headers=headers)\n",
+    "print(response.status_code)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;&nbsp;**三、re模块的使用**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;&nbsp;&nbsp;&nbsp;正则表达式是一个特殊的字符序列，它能帮助你方便的检查一个字符串是否与某种模式匹配。Python 自1.5版本起增加了re 模块，它提供 Perl 风格的正则表达式模式。\n",
+    "\n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;re 模块也提供了与这些方法功能完全一致的函数，这些函数使用一个模式字符串做为它们的第一个参数。在本节中我们针对所使用到的findall()方法与Compile函数进行讲解。\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    " - 1.findall()方法，不同于match()和search()都是返回匹配到的第一个内容就结束匹配,findall()是返回全部符合匹配规则的内容，示例代码如下："
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 16,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Found 'py'\n",
+      "Found 'py'\n",
+      "['py', 'py']\n"
+     ]
+    }
+   ],
+   "source": [
+    "import re  \n",
+    "text = 'pyypppyyyypppp'  \n",
+    "pattern = 'py'  \n",
+    "for match in re.findall(pattern, text):  \n",
+    "    print('Found {!r}'.format(match)) \n",
+    "print(re.findall(pattern, text))\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**<span style=\"color:red\">【练习】</span>提取字符串里的python 字符**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 18,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "Found 'python'\n",
+      "Found 'python'\n",
+      "Found 'python'\n",
+      "['python', 'python', 'python']\n"
+     ]
+    }
+   ],
+   "source": [
+    "import re  \n",
+    "string3 = \"hellomypythonhispythonourpythonend\"\n",
+    "pattern = 'python'  \n",
+    "for match in re.findall(pattern, string3):  \n",
+    "    print('Found {!r}'.format(match)) \n",
+    "print(re.findall(pattern, string3))\n",
+    "\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 20,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "['python', 'python', 'python']\n"
+     ]
+    }
+   ],
+   "source": [
+    "string3 = \"hellomypythonhispythonourpythonend\"\n",
+    "\n",
+    "pattern='python'\n",
+    "res = re.findall(pattern,string3)\n",
+    "print(res)\n",
+    "\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    " - 2.Compile函数，compile 函数用于编译正则表达式，生成一个正则表达式（ Pattern ）对象，供 match() 和 search() 这两个函数使用。语法格式为：\n",
+    " \n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re.compile(pattern[, flags])\n",
+    "\n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;pattern：一个字符串形式的正则表达式\n",
+    "\n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;flags：表示匹配模式，比如忽略大小写，多行模式等"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "string3 = \"hellomypythonhispythonourpythonend\"\n",
+    "pattern3 = re.compile(\".python.\")    \n",
+    "result3 = pattern3.findall(string3)  \n",
+    "print(result3)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    " - 3.re.match函数\n",
+    " \n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;re.match 尝试从字符串的起始位置匹配一个模式，匹配成功re.match方法返回一个匹配的对象，如果不是起始位置匹配成功的话，match()就返回none。语法：\n",
+    "\n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re.match(pattern, string, flags=0)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {
+    "tags": []
+   },
+   "outputs": [],
+   "source": [
+    "import requests  \n",
+    "import re\n",
+    "print(re.match('www', 'www.runoob.com').span())  # 在起始位置匹配\n",
+    "print(re.match('com', 'www.runoob.com'))         # 不在起始位置匹配\n",
+    "\n",
+    "\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    " - 4.re.search方法\n",
+    "    \n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;re.search 扫描整个字符串并返回第一个成功的匹配。函数语法：\n",
+    "\n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; re.search(pattern, string, flags=0)\n",
+    "\n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;span() 是 re 模块中的一个函数，它用于在字符串中搜索模式并返回匹配的起始和结束位置"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import re\n",
+    "print(re.search('www', 'www.runoob.com').span())  # 在起始位置匹配\n",
+    "print(re.search('com', 'www.runoob.com').span())  # 不在起始位置匹配\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "re.match与re.search的区别：re.match只匹配字符串的开始，如果字符串开始不符合正则表达式，则匹配失败，函数返回None；而re.search匹配整个字符串，直到找到一个匹配。二者综合实例如下："
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    " - 5.re.sub函数()\n",
+    "    \n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;Python 的 re 模块提供了re.sub用于替换字符串中的匹配项。语法：\n",
+    "\n",
+    "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;re.sub(pattern, repl, string, count=0, flags=0)\n",
+    "\n",
+    "参数：\n",
+    "- pattern : 正则中的模式字符串。\n",
+    "- repl : 替换的字符串，也可为一个函数。\n",
+    "- string : 要被查找替换的原始字符串。\n",
+    "- count : 模式匹配后替换的最大次数，默认 0 表示替换所有的匹配。\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import re\n",
+    "phone = \"2004-959-559 # 这是一个国外电话号码\"\n",
+    "# 删除字符串中的 Python注释 \n",
+    "num = re.sub(r'#.*$', \"\", phone)\n",
+    "print(\"电话号码是: \", num)\n",
+    "# 删除非数字(-)的字符串 \n",
+    "num = re.sub(r'\\D', \"\", phone)\n",
+    "print (\"电话号码是 : \", num)\n"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**<span style=\"color:red\">【练习】</span>利用正则表达式提取相关字段**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "http://www.baidu.com\n",
+      "http://www.baidu.com\n"
+     ]
+    }
+   ],
+   "source": [
+    "import re\n",
+    "\n",
+    "# 匹配.com或.cn后缀的URL网址\n",
+    "string1 = \"<a href='http://www.baidu.com'>百度首页</a>\"\n",
+    "\n",
+    "pattern1 =\"http://.*com\"\n",
+    "pattern2=\"[a-zA-Z]+://[^\\s]*[.com|.cn]\"\n",
+    "res = re.search(pattern1, string1)\n",
+    "res1 = re.search(pattern2, string1)\n",
+    "\n",
+    "print(res.group())\n",
+    "print(res1.group())"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 24,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "0513-18770915493\n"
+     ]
+    }
+   ],
+   "source": [
+    "string2 = \"0513-18770915493手机号码\"\n",
+    "pattern2 = \"\\d{4}-\\d{11}\"\n",
+    "res2 = re.search(pattern2,string2)\n",
+    "print(res2.group())"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "&nbsp;&nbsp;**四、Datetime模块的使用**"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {
+    "tags": []
+   },
+   "source": [
+    "- 1.Datetime模块介绍"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 25,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2023-07-14\n",
+      "2023\n",
+      "7\n",
+      "14\n"
+     ]
+    }
+   ],
+   "source": [
+    "import datetime\n",
+    "\n",
+    "a = datetime.date.today()\n",
+    "\n",
+    "print(a)\n",
+    "print(a.year)\n",
+    "print(a.month)\n",
+    "print(a.day)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 27,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2019-04-04\n",
+      "2019/04/04\n",
+      "19/04/04\n",
+      "04/04/19\n"
+     ]
+    }
+   ],
+   "source": [
+    "a = datetime.date(2019,4,4)\n",
+    "print(a.__format__('%Y-%m-%d'))\n",
+    "print(a.__format__('%Y/%m/%d'))\n",
+    "print(a.__format__('%y/%m/%d'))\n",
+    "print(a.__format__('%D'))"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "**<span style=\"color:red\">【练习】</span>百度新闻爬取**"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "2023-07-15\n"
+     ]
+    }
+   ],
+   "source": [
+    "import urllib.request\n",
+    "import re\n",
+    "import datetime\n",
+    "\n",
+    "url = \"http://news.baidu.com/\"\n",
+    "content = urllib.request.urlopen(url).read().decode('utf-8')\n",
+    "\n",
+    "\n",
+    "pattern = re.compile('<li class=\"hd.*?<strong>.*?<a.*?>(.*?)</a>.*?strong>',re.S)\n",
+    "\n",
+    "hotNews = re.findall(pattern, content)\n",
+    "\n",
+    "for i in hotNews:\n",
+    "    print(i)\n",
+    "\n",
+    "#打印采集时间\n",
+    "a = datetime.date.today()\n",
+    "\n",
+    "print(a)\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.9.6"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
